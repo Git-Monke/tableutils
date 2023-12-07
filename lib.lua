@@ -42,6 +42,14 @@ function table:ireduce(fn, a)
     return a
 end
 
+function table:sum()
+    local sum = 0
+    for i = 1, #self do
+        sum = sum + self[i]
+    end
+    return sum
+end
+
 function table:every(fn)
     for key, item in pairs(self) do
         if not fn(item, key, self) then
