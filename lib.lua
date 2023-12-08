@@ -2,7 +2,19 @@ require ".luam"
 
 -- https://stackoverflow.com/questions/10989788/format-integer-in-lua
 local function formatInt(number)
+    if not number then
+        return "nil"
+    end
+
+    if number == math.huge then
+        return "Infinity"
+    end
+
     local _, _, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+
+    if not int then
+        return "NaN"
+    end
 
     int = int:reverse():gsub("(%d%d%d)", "%1_")
 
