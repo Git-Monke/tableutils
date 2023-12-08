@@ -1,5 +1,14 @@
 require ".luam"
 
+-- https://stackoverflow.com/questions/10989788/format-integer-in-lua
+local function formatInt(number)
+    local _, _, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+
+    int = int:reverse():gsub("(%d%d%d)", "%1_")
+
+    return minus .. int:reverse():gsub("^_", "") .. fraction
+end
+
 function table:imap(fn)
     local newTable = T {}
     for i = 1, #self do
@@ -131,6 +140,10 @@ local function writeColoredByType(value)
     term.setTextColor(color)
     local text = tostring(value)
 
+    if type(value) == "number" then
+        text = formatInt(value)
+    end
+
     if type(value) == "string" then
         text = '"' .. text .. '"'
     end
@@ -158,6 +171,8 @@ end
 
 --- Recursively prints the contents of a table
 function table:print(nest, tab)
+    assert(type(self) == "table", "Cannot print a non table value")
+
     term.write("{")
     print()
 
@@ -172,7 +187,7 @@ function table:print(nest, tab)
         else
             printKey(key, tab)
             writeColoredByType(value)
-            print()
+            print(",")
         end
     end
     nest[self] = false
@@ -208,10 +223,14 @@ function table:findFirstKey(item)
 end
 
 function table.build(length, initalizer)
+    assert(initalizer, "Must have either a value or function to initialize a table")
     local result = T {}
     if type(initalizer) == "function" then
         for i = 1, length do
-            table.insert(result, initalizer(i))
+            local value = initalizer(i)
+            if value then
+                table.insert(result, value)
+            end
         end
     else
         for i = 1, length do

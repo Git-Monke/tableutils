@@ -1,8 +1,9 @@
 {
-  "package": {
-    "name": "tableutils",
-    "version": "0.1.0",
-    "github": "https://github.com/Git-Monke/tableutils"
-  },
-  "dependencies": {}
+	"dependencies": [
+	],
+	"package": {
+		"github": "https://github.com/Git-Monke/tableutils",
+		"name": "tableutils",
+		"version": "0.2.3"
+	}
 }
