@@ -1,5 +1,3 @@
-require ".luam"
-
 -- https://stackoverflow.com/questions/10989788/format-integer-in-lua
 local function formatInt(number)
     if not number then
